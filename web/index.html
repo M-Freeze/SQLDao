@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="favicon.jpg">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="index.css">
+</head>
+
+<body ng-controller="TodoListController">
+	<form ng-submit="addTask()"><button type="submit" class="invisible"></button>
+		<div class="container">
+				<!-- TITLE -->
+				<div class="row">
+						<h3 class="col-lg-12 text-center"><b>TODO LIST</b></h3>
+				</div>
+				
+				<div class="row">
+					<h4 class="text-center">
+						<ng-pluralize count="todos.length"
+								 when="{
+										 '0': 'No tasks left',
+										 '1': '{} task left',
+										 'other': '{} tasks left'}">
+						</ng-pluralize>
+					</h4>
+				</div>
+				
+				<!-- TASKS -->
+				<div class="row task" ng-repeat="todo in todos">
+					<div class="col-lg-3 text-right"><input type="checkbox" ng-model="todo.done"></div>
+					<div class="col-lg-6"
+					    ng-hide="todo.editing"
+						ng-click="todo.editing = true"
+						ng-class="{'text-muted strikeThrough' : todo.done}"
+						ng-bind-html="todo.text">
+					</div>
+					<div class="col-lg-6" ng-show="todo.editing">
+						<input type="text" ng-blur="todo.editing = false" ng-model="todo.text"></input>
+					</div>
+					<div class="col-lg-3" title="remove this task">
+						<span class="clickable glyphicon glyphicon-remove text-danger" ng-click="removeTask(todo)"></span>
+					</div>
+				</div>
+				
+				<!-- ADD NEW TASK -->
+				<div class="row">
+						<div class="col-lg-6 col-lg-offset-3">
+							<input type="text"
+						    	ng-model="task" 
+								ng-disabled="isMaxedOut"
+								placeholder="{{placeholderMessages[isMaxedOut]}}">
+							</input>
+						</div>
+						<div class="col-lg-3"  title="add a new task">
+							<span class="glyphicon glyphicon-plus" 
+							ng-class="plusIconCss[isMaxedOut]"
+							ng-click="addTask()"></span>
+						</div>
+				</div>
+				
+				<!-- slacker message -->
+				<div class="row" ng-show="todos.length == 0">
+					<br>
+					<span class="col-lg-4 col-lg-offset-4 alert alert-success text-center">
+						<b>Congratulations!</b> You finished everything.
+					</span>
+				</div>
+				
+				<!-- max message -->
+				<div class="row" ng-show="isMaxedOut">
+					<br>
+					<span class="col-lg-4 col-lg-offset-4 alert alert-danger text-center">
+						<b>Woah!</b> Finish these {{MAX}} first.
+					</span>
+				</div>
+			<!--Best debugging tool ever:-->
+		<br><pre>{{todos | json}}</pre> 
+
+		</div>
+	</form>
+	
+<script src="lib/jquery-3.1.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.min.js"></script>
+<script src="TodoListController.js"></script>
+</body>
+</html>
+							<!--not-not-ng-class="{'notClickable text-muted': todoList.isMaxedOut, 'clickable text-success': !todoList.isMaxedOut}"-->
+							<!--not-ng-class="todoList.isMaxedOut ? {notClickable: true, 'text-muted': true} : {clickable: true, 'text-success': true}"-->
+
+				<!--function funcA(){-->
+				<!--    alert("DOM is ready. In funcA.");-->
+				<!--}-->
+				
+				<!--$(funcA);-->
+				
+				<!--let funcB = function(){-->
+				<!--    alert("DOM is ready. In funcB.");-->
+				<!--}-->
+				
+				<!--$(funcB);-->
+				
+				<!--$(() => alert("DOM is ready. In arrow function."));-->
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+angular.module('todoApp', [])
+	.controller('TodoListController', function() {
+		var todoList = this;
+		todoList.todos = [
+			{text:'learn AngularJS', done:true},
+			{text:'build an AngularJS app', done:false}];
+ 
+		todoList.addTodo = function() {
+			todoList.todos.push({text:todoList.todoText, done:false});
+			todoList.todoText = '';
+		};
+ 
+		todoList.remaining = function() {
+			var count = 0;
+			angular.forEach(todoList.todos, function(todo) {
+				count += todo.done ? 0 : 1;
+			});
+			return count;
+		};
+ 
+		todoList.archive = function() {
+			var oldTodos = todoList.todos;
+			todoList.todos = [];
+			angular.forEach(oldTodos, function(todo) {
+				if (!todo.done) todoList.todos.push(todo);
+			});
+		};
+	});
+ -->
+ 

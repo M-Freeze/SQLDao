@@ -1,0 +1,15 @@
+.clickable {
+    cursor: pointer;
+}
+
+.notClickable {
+    cursor: not-allowed;
+}
+
+html input[disabled] {
+    cursor: not-allowed;
+}
+
+.strikeThrough {
+    text-decoration: line-through;
+}
